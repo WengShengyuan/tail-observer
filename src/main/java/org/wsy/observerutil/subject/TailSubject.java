@@ -32,12 +32,12 @@ public class TailSubject extends Observable implements Runnable {
 	}
 	
 	public void startTailing() {
-		logger.info("set tailing");
+		logger.info("start tailing");
 		this.tailing = true;
 	}
 
 	public void kill() {
-		logger.info("kill tailing");
+		logger.info("stop tailing");
 		this.tailing = false;
 	}
 

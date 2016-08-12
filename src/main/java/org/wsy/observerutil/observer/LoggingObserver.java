@@ -11,7 +11,7 @@ public class LoggingObserver implements Observer {
 	private static final Logger logger = LoggerFactory.getLogger(LoggingObserver.class);
 
 	public void update(Observable o, Object arg) {
-		logger.info("updating:" + o + ", obj:" + arg);
+		logger.info("LoggingObserver updating:" + arg);
 	}
 
 }

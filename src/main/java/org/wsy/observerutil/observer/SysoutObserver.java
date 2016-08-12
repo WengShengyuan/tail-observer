@@ -6,7 +6,7 @@ import java.util.Observer;
 public class SysoutObserver implements Observer {
 
 	public void update(Observable o, Object arg) {
-		System.out.println("updating:"+o+", obj:"+arg);
+		System.out.println("SysoutObserver updating:" + arg);
 	}
 
 }

@@ -31,6 +31,7 @@ public class TailPool {
 	
 	public synchronized TailSubject subscribe(String filePath){
 		if(subjects.containsKey(filePath)){
+			logger.info("subject already exist.");
 			return subjects.get(filePath);
 		}
 		logger.info("creating new subject:"+filePath);
@@ -48,9 +49,9 @@ public class TailPool {
 		} else {
 			subject.deleteObserver(obs);
 			int observerCount = subject.countObservers();
-			logger.info("subject contains: "+observerCount+" observers");
+			logger.info("subject has "+observerCount+" observers left.");
 			if(observerCount == 0){
-				logger.info("no observers, stop tailing, remove from subjects.");
+				logger.info("no observer, stopping, remove subject from subject cache.");
 				subject.kill();
 				subjects.remove(filePath);
 			}

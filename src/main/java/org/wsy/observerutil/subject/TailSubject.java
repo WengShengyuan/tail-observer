@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Observable;
 
-import org.apache.commons.io.output.ThresholdingOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,7 @@ public class TailSubject extends Observable implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(TailSubject.class);
 	private File logFile;
 	private long sampleInterval = 200;
-	private boolean startAtTop = false;
+	private boolean startFromTop = false;
 	private boolean tailing = false;
 	
 	public TailSubject(String filePath) {
@@ -23,7 +22,15 @@ public class TailSubject extends Observable implements Runnable {
 	public TailSubject(File file) {
 		this.logFile = file;
 	}
+	
+	public void setInterval(long interval){
+		this.sampleInterval = interval;
+	}
 
+	public void setStartFromTop(boolean flag){
+		this.startFromTop = flag;
+	}
+	
 	public void startTailing() {
 		logger.info("set tailing");
 		this.tailing = true;
@@ -37,7 +44,7 @@ public class TailSubject extends Observable implements Runnable {
 	public void run() {
 		logger.info("thread started");
 		long filePointer = 0;
-		if (this.startAtTop) {
+		if (this.startFromTop) {
 			logger.info("start from top");
 			filePointer = 0;
 		} else {

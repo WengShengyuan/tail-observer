@@ -1,11 +1,10 @@
 package org.wsy.observerutil.core;
 
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wsy.observerutil.observer.TailObserver;
 import org.wsy.observerutil.subject.TailSubject;
 
 public class TailPool {
@@ -29,25 +28,28 @@ public class TailPool {
 		return instance;
 	}
 	
-	public synchronized TailSubject subscribe(String filePath){
+	public synchronized void subscribe(TailObserver tobs){
+		String filePath = tobs.getFilePath();
 		if(subjects.containsKey(filePath)){
 			logger.info("subject already exist.");
-			return subjects.get(filePath);
+			subjects.get(filePath).addObserver(tobs);
+			return;
 		}
 		logger.info("creating new subject:"+filePath);
 		TailSubject subject = new TailSubject(filePath);
 		subject.startTailing();
 		subjects.put(filePath, subject);
 		new Thread(subject).start();
-		return subject;
+		subject.addObserver(tobs);
 	}
 	
-	public synchronized void unSubscribe(String filePath, Observer obs){
+	public synchronized void unSubscribe(TailObserver tobs){
+		String filePath = tobs.getFilePath();
 		TailSubject subject = subjects.get(filePath);
 		if(subject == null){
 			logger.info("subject doesn't exist");
 		} else {
-			subject.deleteObserver(obs);
+			subject.deleteObserver(tobs);
 			int observerCount = subject.countObservers();
 			logger.info("subject has "+observerCount+" observers left.");
 			if(observerCount == 0){

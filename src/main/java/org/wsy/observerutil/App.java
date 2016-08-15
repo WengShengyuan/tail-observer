@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.wsy.observerutil.core.TailPool;
 import org.wsy.observerutil.observer.LoggingObserver;
 import org.wsy.observerutil.observer.SysoutObserver;
+import org.wsy.observerutil.observer.TailObserver;
 
 public class App {
 
@@ -15,16 +16,16 @@ public class App {
 	public static void main(String[] args) throws IOException {
 		String file = "C://log1";
 		String file2 = "C://log2";
-		LoggingObserver ob1 = new LoggingObserver();
-		SysoutObserver ob2 = new SysoutObserver();
-		LoggingObserver ob3 = new LoggingObserver();
-		TailPool.getInstance().subscribe(file).addObserver(ob1);
-		TailPool.getInstance().subscribe(file).addObserver(ob2);
-		TailPool.getInstance().subscribe(file2).addObserver(ob3);
+		TailObserver ob1 = new LoggingObserver(file);
+		TailObserver ob2 = new SysoutObserver(file);
+		TailObserver ob3 = new LoggingObserver(file2);
+		TailPool.getInstance().subscribe(ob1);
+		TailPool.getInstance().subscribe(ob2);
+		TailPool.getInstance().subscribe(ob3);
 		System.in.read();
 		logger.info("unsubscribing...");
-		TailPool.getInstance().unSubscribe(file, ob1);
-		TailPool.getInstance().unSubscribe(file, ob2);
-		TailPool.getInstance().unSubscribe(file2, ob3);
+		TailPool.getInstance().unSubscribe(ob1);
+		TailPool.getInstance().unSubscribe(ob2);
+		TailPool.getInstance().unSubscribe(ob3);
 	}
 }

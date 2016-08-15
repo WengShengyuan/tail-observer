@@ -17,7 +17,7 @@ public class App {
 		String file = "C://log1";
 		String file2 = "C://log2";
 		TailObserver ob1 = new LoggingObserver(file);
-		TailObserver ob2 = new SysoutObserver(file);
+		TailObserver ob2 = new SysoutObserver(file,"UTF-8");
 		TailObserver ob3 = new LoggingObserver(file2);
 		TailPool.getInstance().subscribe(ob1);
 		TailPool.getInstance().subscribe(ob2);
